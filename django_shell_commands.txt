@@ -1,0 +1,141 @@
+1. Создать двух пользователей (с помощью метода User.objects.create_user('username')).
+
+from news.models import *
+
+user_1 = User.objects.create_user(username = "Bobby")
+user_1
+user_2 = User.objects.create_user(username = "Maria")
+user_2
+
+
+2. Создать два объекта модели Author, связанные с пользователями.
+
+author_1 = Author.objects.create(author_user = user_1)
+author_1
+author_2 = Author.objects.create(author_user = user_2)
+author_2
+
+
+3. Добавить 4 категории в модель Category.
+
+category_1 = Category.objects.create(name = "Sports")
+category_1
+category_2 = Category.objects.create(name = "IT")
+category_2
+category_3 = Category.objects.create(name = "Politics")
+category_3
+category_4 = Category.objects.create(name = "kekW")
+category_4
+
+
+4. Добавить 2 статьи и 1 новость.
+
+post_1 = Post.objects.create(author_of_post = author_1, post_type = "NWS", title = "Some news #1", text = "Some news #1 big text.")
+post_1
+post_2 = Post.objects.create(author_of_post = author_1, post_type = "ART", title = "Some article #1", text = "Some article #1 big text.")
+post_2
+post_3 = Post.objects.create(author_of_post = author_2, post_type = "ART", title = "Some article #2", text = "Some article #2 big text.")
+post_3
+
+
+5. Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
+
+post_1.post_category.add(category_1)
+post_1.post_category.add(category_4)
+post_1.post_category
+post_2.post_category.add(category_2)
+post_2.post_category.add(category_4)
+post_2.post_category
+post_3.post_category.add(category_3)
+post_3.post_category.add(category_4)
+post_3.post_category
+
+
+6. Создать как минимум 4 комментария к разным объектам модели Post
+(в каждом объекте должен быть как минимум один комментарий).
+
+comment_1 = Comment.objects.create(comment_post = post_1, comment_user = user_2, text = "This is comment #1 text to post #1 by author_user #2.")
+comment_1
+comment_2 = Comment.objects.create(comment_post = post_1, comment_user = user_2, text = "This is comment #2 text to post #1 by author_user #2.")
+comment_2
+comment_3 = Comment.objects.create(comment_post = post_2, comment_user = user_2, text = "This is comment #1 text to post #2 by author_user #2.")
+comment_3
+comment_4 = Comment.objects.create(comment_post = post_2, comment_user = user_2, text = "This is comment #2 text to post #2 by author_user #2.")
+comment_4
+comment_5 = Comment.objects.create(comment_post = post_3, comment_user = user_1, text = "This is comment #1 text to post #3 by author_user #1.")
+comment_5
+comment_6 = Comment.objects.create(comment_post = post_3, comment_user = user_1, text = "This is comment #2 text to post #3 by author_user #1.")
+comment_6
+
+
+7. Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+
+comment_1.like()
+comment_1.like()
+comment_1.like()
+comment_1.rating_of_comment
+comment_2.dislike()
+comment_2.like()
+comment_2.dislike()
+comment_2.rating_of_comment
+comment_3.dislike()
+comment_3.dislike()
+comment_3.dislike()
+comment_3.rating_of_comment
+comment_4.dislike()
+comment_4.like()
+comment_4.rating_of_comment
+comment_5.like()
+comment_5.like()
+comment_5.rating_of_comment
+comment_6.like()
+comment_6.like()
+comment_6.like()
+comment_6.like()
+comment_6.like()
+comment_6.like()
+comment_6.like()
+comment_6.rating_of_comment
+
+post_1.like()
+post_1.like()
+post_1.like()
+post_1.rating_of_post
+post_2.like()
+post_2.dislike()
+post_2.dislike()
+post_2.rating_of_post
+post_3.dislike()
+post_3.dislike()
+post_3.dislike()
+post_3.rating_of_post
+
+
+8. Обновить рейтинги пользователей.
+
+author_1.update_rating()
+author_1.rating_of_author
+author_2.update_rating()
+author_2.rating_of_author
+
+
+9. Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+
+best_author = Author.objects.order_by("-rating_of_author")[0]
+best_author, best_author.rating_of_author
+
+
+10. Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи,
+основываясь на лайках/дислайках к этой статье.
+
+best_post_info = Post.objects.order_by("-rating_of_post").values('date_of_creation', 'author_of_post__author_user__username', 'rating_of_post', 'title')[0]
+best_post_info
+
+best_post = Post.objects.order_by("-rating_of_post")[0]
+best_post.preview()
+
+
+11. Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+
+best_post_comments = best_post.comment_set.all().values('date_of_creation', 'comment_user__username', 'rating_of_comment', 'text')
+best_post_comments
