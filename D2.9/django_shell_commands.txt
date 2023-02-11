@@ -139,5 +139,3 @@ best_post.preview()
 
 best_post_comments = best_post.comment_set.all().values('date_of_creation', 'comment_user__username', 'rating_of_comment', 'text')
 best_post_comments
-
--
