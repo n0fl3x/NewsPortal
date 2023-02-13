@@ -1,0 +1,32 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+posts
+{% endblock title %}
+
+{% block content %}
+    <h1>Все публикации</h1>
+    <h3>Количество всех публикаций: {{ posts|length }}</h3>
+
+    <hr>
+    {% if posts %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Начало публикации</td>
+            </tr>
+
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.date_of_creation|date:'d.M.y.' }}</td>
+                <td>{{ post.text|truncatechars:20 }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <h2>Публикаций нет. :(</h2>
+    {% endif %}
+{% endblock content %}
