@@ -6,7 +6,7 @@ post
 
 {% block content %}
 <h1> {{ post.title }} </h1>
-<h3> {{ post.date_of_creation|date:'d.M.y.' }}</h3>
+<h3> {{ post.date_of_creation|date:'d.M.Y.' }}</h3>
 <h3> by {{ post.author_of_post }}</h3>
 <hr>
 <h4> {{ post.text }} </h4>
