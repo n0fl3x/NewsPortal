@@ -1,4 +1,6 @@
-{% extends 'flatpages/default.html' %}
+{% extends 'news/default.html' %}
+
+{% load custom_filters %}
 
 {% block title %}
 posts
@@ -19,9 +21,9 @@ posts
 
             {% for post in posts %}
             <tr>
-                <td>{{ post.title }}</td>
+                <td>{{ post.title|censor }}</td>
                 <td>{{ post.date_of_creation|date:'d.M.Y.' }}</td>
-                <td>{{ post.text|truncatechars:20 }}</td>
+                <td>{{ post.text|truncatechars:20|censor }}</td>
             </tr>
             {% endfor %}
 

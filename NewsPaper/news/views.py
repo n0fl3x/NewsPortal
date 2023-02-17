@@ -1,8 +1,7 @@
 from django.shortcuts import render
 
 from django.views.generic import ListView, DetailView
-from .models import Post
-from datetime import datetime
+from .models import *
 
 
 class PostsList(ListView):
