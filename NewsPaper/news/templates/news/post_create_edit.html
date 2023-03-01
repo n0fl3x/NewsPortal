@@ -1,0 +1,21 @@
+{% extends 'news/default.html' %}
+
+{% block content %}
+
+{% if request.get_full_path == '/articles/create/' %}
+<h1>Article create</h1>
+{% elif request.get_full_path == '/news/create/' %}
+<h1>News create</h1>
+{% elif 'edit' in request.get_full_path %}
+<h1>Post edit</h1>
+{% else %}
+<h1>Post delete</h1>
+{% endif %}
+
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save"/>
+</form>
+{% endblock content %}

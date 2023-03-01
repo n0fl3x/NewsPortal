@@ -3,13 +3,31 @@
 {% load custom_filters %}
 
 {% block title %}
-post
+Post
 {% endblock title %}
 
 {% block content %}
 <h1> {{ post.title|censor }} </h1>
-<h3> {{ post.date_of_creation|date:'d.M.Y.' }}</h3>
-<h3> by {{ post.author_of_post }}</h3>
 <hr>
-<h4> {{ post.text|censor }} </h4>
+<h5 align="right">
+    {% if post.post_category.all|length == 0 %}
+        No category
+    {% elif post.post_category.all|length == 1 %}
+        Category:
+        <br>
+        {{ post.post_category.get }}
+    {% else %}
+        Categories:
+        <br>
+        {% for category in post.post_category.all %}
+        {{ category }}
+        <br>
+        {% endfor %}
+    {% endif %}
+</h5>
+<br>
+<h5 align="right"> Posted on {{ post.date_of_creation|date:'d.M.Y.' }}</h5>
+<h5 align="right"> by {{ post.author_of_post }}</h5>
+<hr>
+<h6 align="left"> {{ post.text|censor }} </h6>
 {% endblock content %}
