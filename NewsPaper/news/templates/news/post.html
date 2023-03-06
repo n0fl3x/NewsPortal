@@ -31,11 +31,20 @@ Post
 <hr>
 <h6 align="left"> {{ post.text|censor }} </h6>
 <hr>
-{% if perms.news.change_post and post.author_of_post == request %}
+{% if user.is_authenticated %}
+{% if perms.news.change_post %}
+{% if post.author_of_post == request.user.author %}
 <a href="{% url 'post_edit' pk=post.id %}">Edit this post</a>
 <br>
 {% endif %}
+{% endif %}
+{% endif %}
+
+{% if user.is_authenticated %}
 {% if perms.news.delete_post %}
+{% if post.author_of_post == request.user.author %}
 <a href="{% url 'post_delete' pk=post.id %}">Delete this post</a>
+{% endif %}
+{% endif %}
 {% endif %}
 {% endblock content %}

@@ -32,8 +32,10 @@ Posts
             <td>Category</td>
             <td>Date of creation</td>
             <td>Preview</td>
+            {% if user.is_authenticated %}
             {% if perms.news.change_post or perms.news.delete_post %}
             <td>Actions</td>
+            {% endif %}
             {% endif %}
         </tr>
 
@@ -49,12 +51,20 @@ Posts
             <td>{{ post.date_of_creation|date:'d.M.Y.' }}</td>
             <td>{{ post.text|truncatechars:20|censor }}</td>
             <td>
+                {% if user.is_authenticated %}
                 {% if perms.news.change_post %}
+                {% if post.author_of_post == request.user.author %}
                 <a href="{% url 'post_edit' pk=post.id %}">Edit</a>
                 {% endif %}
+                {% endif %}
+                {% endif %}
 
+                {% if user.is_authenticated %}
                 {% if perms.news.delete_post %}
+                {% if post.author_of_post == request.user.author %}
                 <a href="{% url 'post_delete' pk=post.id %}">Delete</a>
+                {% endif %}
+                {% endif %}
                 {% endif %}
             </td>
         </tr>
