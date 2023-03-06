@@ -19,6 +19,11 @@ Posts
 </form>
 
 <div align="center">
+    {% if perms.news.add_post %}
+    <a href="{% url 'news_create' %}">Create news</a>
+    <br>
+    <a href="{% url 'articles_create' %}">Create article</a>
+    {% endif %}
     <hr>
     {% if posts %}
     <table>
@@ -27,6 +32,9 @@ Posts
             <td>Category</td>
             <td>Date of creation</td>
             <td>Preview</td>
+            {% if perms.news.change_post or perms.news.delete_post %}
+            <td>Actions</td>
+            {% endif %}
         </tr>
 
         {% for post in posts %}
@@ -40,6 +48,15 @@ Posts
             </td>
             <td>{{ post.date_of_creation|date:'d.M.Y.' }}</td>
             <td>{{ post.text|truncatechars:20|censor }}</td>
+            <td>
+                {% if perms.news.change_post %}
+                <a href="{% url 'post_edit' pk=post.id %}">Edit</a>
+                {% endif %}
+
+                {% if perms.news.delete_post %}
+                <a href="{% url 'post_delete' pk=post.id %}">Delete</a>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
 

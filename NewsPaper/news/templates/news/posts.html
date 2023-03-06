@@ -11,7 +11,17 @@ Posts
 <h3>Posts on current page: {{ posts|length }}</h3>
 
 <div align="center">
+
+    {% if user.is_authenticated %}
+    {% if perms.news.add_post %}
+    <a href="{% url 'news_create' %}">Create news</a>
+    <br>
+    <a href="{% url 'articles_create' %}">Create article</a>
+    {% endif %}
+    {% endif %}
+
     <hr>
+
     {% if posts %}
     <table>
         <tr>
@@ -19,6 +29,11 @@ Posts
             <td>Category</td>
             <td>Date of creation</td>
             <td>Preview</td>
+            {% if user.is_authenticated %}
+            {% if perms.news.change_post or perms.news.delete_post %}
+            <td>Actions</td>
+            {% endif %}
+            {% endif %}
         </tr>
 
         {% for post in posts %}
@@ -32,6 +47,23 @@ Posts
             </td>
             <td>{{ post.date_of_creation|date:'d.M.Y.' }}</td>
             <td>{{ post.text|truncatechars:20|censor }}</td>
+            <td>
+                {% if user.is_authenticated %}
+                {% if perms.news.change_post %}
+                {% if post.author_of_post == request.user.author %}
+                <a href="{% url 'post_edit' pk=post.id %}">Edit</a>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                {% if perms.news.delete_post %}
+                {% if post.author_of_post == request.user.author %}
+                <a href="{% url 'post_delete' pk=post.id %}">Delete</a>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
 

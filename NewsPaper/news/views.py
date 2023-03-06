@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, DetailView, CreateView, DeleteView, UpdateView)
@@ -58,7 +59,8 @@ class PostsSearch(ListView):
         return context
 
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     model = Post
     form_class = PostCreateForm
     template_name = 'post_create_edit.html'
@@ -70,7 +72,8 @@ class NewsCreate(CreateView):
         return super().form_valid(form)
 
 
-class ArticlesCreate(CreateView):
+class ArticlesCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     model = Post
     form_class = PostCreateForm
     template_name = 'post_create_edit.html'
@@ -82,27 +85,16 @@ class ArticlesCreate(CreateView):
         return super().form_valid(form)
 
 
-class PostEdit(UpdateView):
+class PostEdit(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     model = Post
     form_class = PostCreateForm
     template_name = 'post_create_edit.html'
     success_url = reverse_lazy('posts_list')
 
 
-# class ArticlesEdit(UpdateView):
-#     model = Post
-#     form_class = PostCreateForm
-#     template_name = 'post_create_edit.html'
-#     success_url = reverse_lazy('posts_list')
-
-
-class PostDelete(DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('posts_list')
-
-
-# class ArticlesDelete(DeleteView):
-#     model = Post
-#     template_name = 'post_delete.html'
-#     success_url = reverse_lazy('posts_list')

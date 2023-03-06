@@ -11,18 +11,18 @@ Post
 <hr>
 <h5 align="right">
     {% if post.post_category.all|length == 0 %}
-        No category
+    No category
     {% elif post.post_category.all|length == 1 %}
-        Category:
-        <br>
-        {{ post.post_category.get }}
+    Category:
+    <br>
+    {{ post.post_category.get }}
     {% else %}
-        Categories:
-        <br>
-        {% for category in post.post_category.all %}
-        {{ category }}
-        <br>
-        {% endfor %}
+    Categories:
+    <br>
+    {% for category in post.post_category.all %}
+    {{ category }}
+    <br>
+    {% endfor %}
     {% endif %}
 </h5>
 <br>
@@ -30,4 +30,12 @@ Post
 <h5 align="right"> by {{ post.author_of_post }}</h5>
 <hr>
 <h6 align="left"> {{ post.text|censor }} </h6>
+<hr>
+{% if perms.news.change_post and post.author_of_post == request %}
+<a href="{% url 'post_edit' pk=post.id %}">Edit this post</a>
+<br>
+{% endif %}
+{% if perms.news.delete_post %}
+<a href="{% url 'post_delete' pk=post.id %}">Delete this post</a>
+{% endif %}
 {% endblock content %}
